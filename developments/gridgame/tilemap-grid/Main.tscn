@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Grid.gd" type="Script" id=1]
+[ext_resource path="res://character.png" type="Texture" id=2]
+[ext_resource path="res://star.png" type="Texture" id=3]
+[ext_resource path="res://Object.gd" type="Script" id=4]
+[ext_resource path="res://Player.gd" type="Script" id=5]
+
+[node name="Main" type="Node2D"]
+
+[node name="Grid" type="TileMap" parent="."]
+cell_size = Vector2( 16, 16 )
+format = 1
+script = ExtResource( 1 )
+
+[node name="Object" type="Node2D" parent="Grid"]
+position = Vector2( 104, 48 )
+script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="Grid/Object"]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 3 )
+
+[node name="Object2" type="Node2D" parent="Grid"]
+position = Vector2( 40, 80 )
+script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="Grid/Object2"]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 3 )
+
+[node name="Object3" type="Node2D" parent="Grid"]
+position = Vector2( 48, 104 )
+script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="Grid/Object3"]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 3 )
+
+[node name="Player" type="Node2D" parent="Grid"]
+position = Vector2( 24, 24 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Grid/Player"]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 2 )
