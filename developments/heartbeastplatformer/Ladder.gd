@@ -20,14 +20,13 @@ func _on_climbzone_body_entered(body:PhysicsBody2D):
 	if body ==null: 
 		return
 	if body.is_in_group("climber"):	
-		if body.has_method("set_state"):
-			body.set_state("climb")
-				
+		if body.has_method("set_in_ladder"):
+			body.set_in_ladder(true)
 
 
 func _on_climbzone_body_exited(body:PhysicsBody2D):
 	if body==null: 
 		return
 	if body.is_in_group("climber"):	
-		if body.has_method("set_state"):
-			body.set_state("move")
+		if body.has_method("set_in_ladder"):
+			body.set_in_ladder(false)

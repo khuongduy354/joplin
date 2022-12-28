@@ -20,15 +20,28 @@ func _ready():
 
 func _physics_process(delta):
 	var dir =get_input_direction()
+	prepare_state()
 	match state: 
 		CLIMB: 
 			climb(dir.x)
 		MOVE: 
 			move(dir.x)
 	apply_x_accel(dir.x)
-	
 
+func prepare_state():
+	if Input.is_action_pressed("ui_up") and is_in_ladder:
+		set_state("climb")
+	if not is_in_ladder: 
+		set_state("move")
 
+func climb(dir): 
+	if Input.is_action_pressed("ui_up"):
+		veloc.y=-50
+	elif Input.is_action_pressed("ui_down"):
+		veloc.y=50
+	else: 
+		veloc.y=0
+	move_and_slide(veloc,Vector2.UP)
 func hit_by_spikes():
 	queue_free()
 
@@ -50,14 +63,7 @@ func set_state(state_str):
 	if state_str == "move":
 		state = MOVE 
 		
-func climb(dir): 
-	if Input.is_action_pressed("ui_up"):
-		veloc.y=-50
-	elif Input.is_action_pressed("ui_down"):
-		veloc.y+=50
-	else: 
-		veloc.y=0
-	move_and_slide(veloc,Vector2.UP)
+
 
 func get_input_direction():
 	var input_dir: Vector2 = Vector2.ZERO
