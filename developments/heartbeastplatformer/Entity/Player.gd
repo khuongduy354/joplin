@@ -6,12 +6,18 @@ signal player_die
 # var b = "text"
 enum {CLIMB, MOVE}
 var state = MOVE
-export(Resource) var MovementData
 var is_in_ladder=false  
+var was_on_floor = is_on_floor()
+var double_jump=1
+var bounce_jump=false # bounce after double jump, runs out after time 
+
+export(Resource) var MovementData
 onready var max_speed = MovementData.max_speed
 onready var jump_height=MovementData.jump_height
 onready var health = MovementData.health
 onready var GRAVITY =MovementData.GRAVITY
+
+onready var coyoteTimer = $CoyoteJump
 
 var veloc = Vector2.ZERO
 
@@ -20,6 +26,7 @@ func _ready():
 
 func _physics_process(delta):
 	var dir =get_input_direction()
+	was_on_floor = is_on_floor()
 	prepare_state()
 	match state: 
 		CLIMB: 
@@ -42,19 +49,27 @@ func climb(dir):
 	else: 
 		veloc.y=0
 	move_and_slide(veloc,Vector2.UP)
-func hit_by_spikes():
-	queue_free()
+
 
 func move(dir): 
 	veloc.y+=GRAVITY
-	if is_on_floor():
+	if was_on_floor and !is_on_floor(): 
+		coyoteTimer.start()
+	if is_on_floor() || !coyoteTimer.is_stopped():
+		double_jump=1
 		if Input.is_action_just_pressed("space"):
 			veloc.y=-jump_height
+			bounce_jump=false
+	else: 
+		if Input.is_action_just_pressed("space") and  double_jump > 0: 
+			double_jump-=1
+			veloc.y=-jump_height
+			bounce_jump=true
+			$BounceJump.start()
 	move_and_slide(veloc,Vector2.UP)
 
 func set_in_ladder(isInLad:bool):
 	is_in_ladder = isInLad
-	print(is_in_ladder)
 	
 	
 func set_state(state_str): 
@@ -75,6 +90,7 @@ func take_damage(damage):
 	health -= damage
 
 func die(): 
+	queue_free()
 	emit_signal("player_die")	
 	
 func _on_Hurtbox_body_entered(body):
@@ -86,3 +102,7 @@ func apply_x_accel(dir):
 	
 func apply_friction():
 	veloc.x = move_toward(veloc.x,0,20)
+
+
+func _on_BounceJump_timeout():
+	bounce_jump=false
