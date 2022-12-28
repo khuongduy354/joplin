@@ -53,17 +53,21 @@ func climb(dir):
 
 func move(dir): 
 	veloc.y+=GRAVITY
+	# coyote allows jump after falling a bit
 	if was_on_floor and !is_on_floor(): 
 		coyoteTimer.start()
-	if is_on_floor() || !coyoteTimer.is_stopped():
+	# double jump reset 
+	if is_on_floor():
 		double_jump=1
-		if Input.is_action_just_pressed("space"):
+		
+	if Input.is_action_just_pressed("space"):
+		if is_on_floor() or !coyoteTimer.is_stopped() or bounce_jump:
 			veloc.y=-jump_height
 			bounce_jump=false
-	else: 
-		if Input.is_action_just_pressed("space") and  double_jump > 0: 
-			double_jump-=1
-			veloc.y=-jump_height
+		else: 
+			if double_jump > 0: 
+				double_jump-=1
+				veloc.y=-jump_height
 			bounce_jump=true
 			$BounceJump.start()
 	move_and_slide(veloc,Vector2.UP)
