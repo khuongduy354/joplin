@@ -7,7 +7,7 @@
 [sub_resource type="CapsuleShape2D" id=1]
 height = 16.0
 
-[node name="Player" type="KinematicBody2D" groups=["climber"]]
+[node name="Player" type="KinematicBody2D" groups=["checkpointer", "climber"]]
 collision_mask = 6
 script = ExtResource( 2 )
 MovementData = ExtResource( 3 )
@@ -20,10 +20,6 @@ shape = SubResource( 1 )
 texture = ExtResource( 1 )
 hframes = 6
 
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-zoom = Vector2( 0.5, 0.5 )
-
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_mask = 6
 monitorable = false
@@ -32,12 +28,18 @@ monitorable = false
 polygon = PoolVector2Array( -20, 24, -15, 24, -12, 14, -10, 14, -7, 24, -1, 24, -5, 12, -5, 7, -5, 4, -7, 1, -8, -4, -13, -4, -13, 1, -16, 3, -16, 12, -17, 15 )
 
 [node name="BounceJump" type="Timer" parent="."]
-wait_time = 0.15
+wait_time = 0.2
 one_shot = true
 
 [node name="CoyoteJump" type="Timer" parent="."]
 wait_time = 0.15
 one_shot = true
 
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_Hurtbox_body_entered"]
 [connection signal="timeout" from="BounceJump" to="." method="_on_BounceJump_timeout"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="viewport_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_viewport_exited"]

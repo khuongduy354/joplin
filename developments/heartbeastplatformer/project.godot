@@ -36,6 +36,10 @@ config/name="HeartBeastPlatformer"
 run/main_scene="res://Levels/level1.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+GameAudio="*res://GameAudio.tscn"
+
 [display]
 
 window/size/width=960
