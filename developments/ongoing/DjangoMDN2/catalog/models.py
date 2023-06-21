@@ -17,7 +17,7 @@ class Book(models.Model):
     # lang = models.ForeignKey('Language', on_delete=models.CASCADE)
 
     author = models.ForeignKey('Author', on_delete=models.CASCADE)
-    objects = models.Manager()
+    # objects = models.Manager()
     genre = models.ManyToManyField('Genre')
     # objects = models.Manager()
 

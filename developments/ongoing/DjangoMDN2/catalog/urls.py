@@ -15,7 +15,7 @@ urlpatterns += [
 
 urlpatterns += [
     path('books/', views.get_all_books, name='get_all_books'),
-    path('books/<int:isbn>', views.index, name='index'),
+    path('books/<str:isbn>', views.get_detail_book, name='get_detail_book'),
 ]
 
 urlpatterns += [
